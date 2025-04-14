@@ -9,5 +9,5 @@ const Dashboard = () => {
     </div>
   );
 };
-
+// src/app/page.tsx
 export default Dashboard;
