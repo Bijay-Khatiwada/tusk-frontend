@@ -8,7 +8,7 @@ export default function CreateTeamPage() {
   const [formData, setFormData] = useState({
     name: '',
     description: '',
-    createdBy: '', // should come from logged in user later
+    createdBy: '', // should come from logged-in user later
     members: '',
     projects: '',
   });
@@ -26,16 +26,22 @@ export default function CreateTeamPage() {
       projects: formData.projects.split(',').map((id) => id.trim()),
     };
 
-    const res = await fetch('http://127.0.0.1:5001/team/create', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload),
-    });
+    try {
+      const res = await fetch('http://127.0.0.1:5001/team/create', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
 
-    if (res.ok) {
-      router.push('/team');
-    } else {
-      alert('Failed to create team');
+      if (res.ok) {
+        // Redirect to the teams list page after creating the team
+        router.push('/teams');
+      } else {
+        alert('Failed to create team');
+      }
+    } catch (error) {
+      alert('Error occurred while creating the team');
+      console.error(error);
     }
   };
 

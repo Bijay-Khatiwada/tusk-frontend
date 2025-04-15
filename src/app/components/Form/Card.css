@@ -1,0 +1,37 @@
+.custom-card {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 16px;
+    padding: 1.5rem;
+    margin: 1rem;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+    box-shadow: 0 0 10px rgba(0, 255, 170, 0.05);
+}
+
+.custom-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 0 15px rgba(0, 255, 170, 0.15);
+}
+
+.card-title {
+    font-family: 'Orbitron', sans-serif;
+    color: #00ffcc;
+    font-size: 1.25rem;
+    margin-bottom: 0.5rem;
+}
+
+.card-description {
+    color: #ddd;
+    font-size: 0.95rem;
+    font-family: 'Exo', sans-serif;
+}
+
+.card-footer {
+    margin-top: 1rem;
+    font-size: 0.8rem;
+    color: #aaa;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding-top: 0.5rem;
+}
