@@ -5,7 +5,7 @@ import ClientLayout from './ClientLayout';
 
 
 export const metadata = {
-  title: 'Alien Task HQ',
+  title: 'TUSK',
   description: 'Manage your team across the stars.',
 };
 
