@@ -1,20 +1,41 @@
 'use client';
 
-import { usePathname } from 'next/navigation';
+import { useEffect, useState } from 'react';
+import { usePathname, useRouter } from 'next/navigation';
 import Navbar from './components/Navbar';
 import Sidebar from './components/Sidebar';
 
 const getBackgroundImage = (pathname: string): string => {
-  if (pathname.startsWith('/tasks')) return '/images/tasks-bg.jpg';
-  if (pathname.startsWith('/teams')) return '/images/teams-bg.jpg';
-  if (pathname.startsWith('/projects')) return '/images/projects-bg.jpg';
-  return '/images/default-alien-bg.jpg';
+  return '/images/white.png'; // Simplified for now
 };
+
+const PUBLIC_ROUTES = ['/login', '/signup'];
 
 export default function ClientLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
+  const router = useRouter();
   const backgroundImage = getBackgroundImage(pathname);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
+  useEffect(() => {
+    const token = localStorage.getItem('jwtToken');
+    const isPublic = PUBLIC_ROUTES.includes(pathname);
+
+    if (!token && !isPublic) {
+      router.push('/login'); // Redirect if not logged in
+    }
+
+    setIsAuthenticated(!!token);
+  }, [pathname]);
+
+  const isPublicRoute = PUBLIC_ROUTES.includes(pathname);
+
+  // If on public route (signup/login), show only content
+  if (isPublicRoute || !isAuthenticated) {
+    return <>{children}</>;
+  }
+
+  // Authenticated routes: show full layout
   return (
     <div className="layout" style={{ position: 'relative' }}>
       <div
@@ -39,4 +60,3 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
     </div>
   );
 }
-export { ClientLayout };

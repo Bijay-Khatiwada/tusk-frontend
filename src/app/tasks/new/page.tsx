@@ -1,30 +1,81 @@
-// src/app/tasks/new/page.tsx
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 
 export default function NewTaskPage() {
-  const [title, setTitle] = useState('');
-  const [description, setDescription] = useState('');
   const router = useRouter();
+  const [formData, setFormData] = useState({
+    title: '',
+    description: '',
+    assignedTo: '',
+    project: '',
+    status: 'T/.;oDo',
+  });
+
+  const [users, setUsers] = useState([]);
+  const [projects, setProjects] = useState([]);
+  const userId = typeof window !== 'undefined' ? localStorage.getItem('userId') : null;
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const token = localStorage.getItem('jwtToken');
+        if (!token) {
+          console.error('JWT token not found.');
+          return;
+        }
+
+        const [userRes, projectRes] = await Promise.all([
+          fetch('http://127.0.0.1:5001/user/list', {
+            headers: { Authorization: `Bearer ${token}` },
+          }),
+          fetch('http://127.0.0.1:5001/project/list', {
+            headers: { Authorization: `Bearer ${token}` },
+          }),
+        ]);
+
+        const usersData = await userRes.json();
+        const projectsData = await projectRes.json();
+
+        setUsers(Array.isArray(usersData) ? usersData : usersData.users || []);
+        setProjects(Array.isArray(projectsData) ? projectsData : projectsData.projects || []);
+      } catch (err) {
+        console.error('Error fetching data:', err);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const res = await fetch('http://127.0.0.1:5001/task/create', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        title,
-        description,
-        assignedTo: '6621923f4c1e2f97d9f75a12', // Replace with a real user ID
-        status: 'todo',
-      }),
-    });
+    const payload = {
+      ...formData,
+      createdBy: userId,
+    };
 
-    if (res.ok) {
-      router.push('/tasks');
+    try {
+      const res = await fetch('http://127.0.0.1:5001/task/create', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+
+      if (res.ok) {
+        router.push('/tasks');
+      } else {
+        const errorData = await res.json();
+        alert(errorData.message || 'Failed to create task');
+      }
+    } catch (err) {
+      console.error('Task creation failed:', err);
+      alert('Something went wrong.');
     }
   };
 
@@ -34,17 +85,50 @@ export default function NewTaskPage() {
       <form onSubmit={handleSubmit} className="space-y-4">
         <input
           type="text"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
+          name="title"
+          value={formData.title}
+          onChange={handleChange}
           placeholder="Task title"
           className="w-full p-2 border rounded"
+          required
         />
         <textarea
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
+          name="description"
+          value={formData.description}
+          onChange={handleChange}
           placeholder="Description"
           className="w-full p-2 border rounded"
         />
+
+        <select
+          name="assignedTo"
+          value={formData.assignedTo}
+          onChange={handleChange}
+          className="w-full p-2 border rounded"
+          required
+        >
+          <option value="">Assign to</option>
+          {users.map((user: any) => (
+            <option key={user._id} value={user._id}>
+              {user.name} ({user.email})
+            </option>
+          ))}
+        </select>
+
+        <select
+          name="project"
+          value={formData.project}
+          onChange={handleChange}
+          className="w-full p-2 border rounded"
+        >
+          <option value="">Select Project</option>
+          {projects.map((project: any) => (
+            <option key={project._id} value={project._id}>
+              {project.name}
+            </option>
+          ))}
+        </select>
+
         <button
           type="submit"
           className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"

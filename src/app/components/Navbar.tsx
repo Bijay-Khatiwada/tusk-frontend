@@ -6,7 +6,7 @@ const Navbar = () => {
   return (
     <header className="navbar">
       <div className="navbar-container">
-        <h1 className="navbar-title">Task Manager</h1>
+        <h1 className="navbar-title">Tusk</h1>
         <nav>
           <ul className="navbar-links">
             <li><Link href="/">Home</Link></li>

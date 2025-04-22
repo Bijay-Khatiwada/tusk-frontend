@@ -7,8 +7,8 @@ import Card from './taskCard';
 type Props = {
   id: string;
   title: string;
-  description: string;
-  footer?: React.ReactNode;
+  description: string | React.ReactNode; // ✅ Supports JSX or plain text
+  footer?: string;
 };
 
 const TaskCardWrapper: React.FC<Props> = ({ id, title, description, footer }) => {

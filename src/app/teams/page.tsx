@@ -1,20 +1,68 @@
-export const dynamic = 'force-dynamic'; // disables caching
+'use client';
+import React, { useEffect, useState } from 'react';
 import TeamCardWrapper from '../components/TeamCardWrapper';
 import Link from 'next/link';
+
+type User = { name: string };
+type Project = { name: string };
 
 type Team = {
   _id: string;
   name: string;
   description: string;
+  createdBy?: User;
+  members?: User[];
+  projects?: Project[];
+  createdAt?: string;
 };
 
-export default async function TeamListPage() {
-  const res = await fetch('http://127.0.0.1:5001/team/list', { cache: 'no-store' });
-  const teams: Team[] = await res.json();
+const TeamListPage = () => {
+  const [teams, setTeams] = useState<Team[]>([]);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchTeams = async () => {
+      const token = localStorage.getItem('jwtToken');
+      if (!token) {
+        setError('No token found. Please login again.');
+        return;
+      }
+
+      try {
+        const res = await fetch('http://localhost:5001/team/list', {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+          },
+        });
+
+        if (!res.ok) {
+          throw new Error('Failed to fetch teams');
+        }
+
+        const teamsData = await res.json();
+        setTeams(teamsData);
+      } catch (err) {
+        setError(err.message);
+        console.error('Error fetching teams:', err);
+      }
+    };
+
+    fetchTeams();
+  }, []);
 
   return (
     <main className="p-6">
-      <h1 className="text-2xl font-bold mb-4">👾 Teams</h1>
+      <h1 className="text-2xl font-bold mb-4 flex items-center gap-2">
+        <img
+          id="icon-image"
+          src="/images/team.png"
+          alt="Logo"
+          className="w-12 h-12 relative top-1"
+        />
+        Teams
+      </h1>
+
+      {error && <p className="text-red-500">{error}</p>}
 
       <ul className="space-y-3">
         {teams.map((team) => (
@@ -22,36 +70,29 @@ export default async function TeamListPage() {
             key={team._id}
             id={team._id}
             title={team.name}
-            description={team.description}
+            description={
+              <>
+                <p className="mb-1">{team.description}</p>
+                <p className="text-sm"><strong>Created By:</strong> {team.createdBy?.name || 'Unknown'}</p>
+                <p className="text-sm"><strong>Members:</strong> {team.members?.map(m => m.name).join(', ') || 'None'}</p>
+                <p className="text-sm"><strong>Projects:</strong> {team.projects?.map(p => p.name).join(', ') || 'None'}</p>
+                <p className="text-sm"><strong>Created At:</strong> {team.createdAt ? new Date(team.createdAt).toLocaleString() : 'N/A'}</p>
+              </>
+            }
           />
         ))}
       </ul>
 
-      {/* Floating "Create Team" button */}
       <Link href="../teams/create">
-  <div
-    className="fixed bottom-6 right-6 z-50 bg-blue-600 hover:bg-blue-700 text-white text-5xl rounded-full w-20 h-20 flex items-center justify-center shadow-lg cursor-pointer transition-transform hover:scale-110"
-    title="Create Team"
-    style={{
-      position: 'fixed',
-      bottom: '6rem', // Adjust as needed
-      right: '6rem', // Adjust as needed
-      width: '80px',  // Circle size
-      height: '80px', // Circle size
-      fontSize: '90px', // Font size for the plus sign
-    }}
-  >
-    <span style={{
-      position: 'absolute',
-      top: '50%',
-      left: '50%',
-      transform: 'translate(-50%, -50%)',
-      fontSize: '50px', // Adjust size to fit
-    }}>
-      +
-    </span>
-  </div>
-</Link>
+        <div
+          className="fixed bottom-6 right-6 z-50 bg-blue-600 hover:bg-blue-700 text-white text-5xl rounded-full w-20 h-20 flex items-center justify-center shadow-lg cursor-pointer transition-transform hover:scale-110"
+          title="Create Team"
+        >
+          <span className="text-4xl">+</span>
+        </div>
+      </Link>
     </main>
   );
-}
+};
+
+export default TeamListPage;

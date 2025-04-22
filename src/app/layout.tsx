@@ -1,8 +1,7 @@
 // src/app/layout.tsx
+
 import './globals.css';
 import ClientLayout from './ClientLayout';
-
-
 
 export const metadata = {
   title: 'TUSK',

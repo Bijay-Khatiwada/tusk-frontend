@@ -4,12 +4,18 @@
 import React from 'react';
 import '../../app/components/Form/Card.css'; 
 
-interface CardProps {
-    title: string;
-    description: string;
-    footer?: React.ReactNode;
-    onClick?: ()=> void;
-}
+// interface CardProps {
+//     title: string;
+//     description: string;
+//     footer?: React.ReactNode;
+//     onClick?: ()=> void;
+// }
+type CardProps = {
+  title: string;
+  description: string | React.ReactNode; // ← update this
+  footer?: string;
+  onClick?: () => void;
+};
 
 const Card: React.FC<CardProps>=({
     title, description, footer, onClick

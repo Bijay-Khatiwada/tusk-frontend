@@ -1,31 +1,30 @@
-// src/app/components/TaskCardWrapper.tsx
+// src/app/components/TeamCardWrapper.tsx
 'use client';
 
 import { useRouter } from 'next/navigation';
-import Card from './taskCard';
+import Card from './teamCard';
+import React from 'react';
 
 type Props = {
   id: string;
   title: string;
-  description: string;
-  footer?: React.ReactNode;
+  description: string | React.ReactNode;
 };
 
-const TaskCardWrapper: React.FC<Props> = ({ id, title, description, footer }) => {
+const TeamCardWrapper: React.FC<Props> = ({ id, title, description }) => {
   const router = useRouter();
 
   const handleClick = () => {
-    router.push(`/tasks/${id}`);
+    router.push(`/teams/${id}`);
   };
 
   return (
     <Card
       title={title}
       description={description}
-      footer={footer}
       onClick={handleClick}
     />
   );
 };
 
-export default TaskCardWrapper;
+export default TeamCardWrapper;

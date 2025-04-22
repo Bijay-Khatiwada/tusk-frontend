@@ -1,62 +1,103 @@
-// src/app/tasks/page.tsx
+'use client';
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import TaskCardWrapper from '../components/TaskCardWrapper';
 import Link from 'next/link';
 
-async function getTasks() {
-  const res = await fetch('http://127.0.0.1:5001/task/list', {
-    cache: 'no-store',
-  });
+export default function TasksPage() {
+  const [tasks, setTasks] = useState([]);
+  const [error, setError] = useState('');
 
-  if (!res.ok) {
-    throw new Error('Failed to fetch tasks');
+  useEffect(() => {
+    const getTasks = async () => {
+      try {
+        const token = localStorage.getItem('jwtToken');
+
+        const res = await fetch('http://localhost:5001/task/list', {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        if (!res.ok) {
+          throw new Error('Failed to fetch tasks');
+        }
+
+        const data = await res.json();
+        setTasks(data);
+      } catch (err: any) {
+        console.error(err);
+        setError(err.message || 'Something went wrong');
+      }
+    };
+
+    getTasks();
+  }, []);
+
+  if (error) {
+    return (
+      <main className="p-6">
+        <h1 className="text-2xl font-bold text-red-500 mb-4">Error: {error}</h1>
+      </main>
+    );
   }
-
-  return res.json();
-}
-
-export default async function TasksPage() {
-  const tasks = await getTasks();
 
   return (
     <main className="p-6">
-      <h1 className="text-2xl font-bold mb-6">📝 All Tasks</h1>
+      <h1 className="text-2xl font-bold mb-6">
+        <img
+          id="icon-image"
+          src="/images/task.png"
+          alt="Logo"
+          className="w-24 h-24 inline-block"
+        />
+        All Tasks
+      </h1>
+
       <div className="flex flex-wrap gap-4">
         {tasks.map((task: any) => (
           <TaskCardWrapper
             key={task._id}
             id={task._id}
             title={task.title}
-            description={task.description}
+            description={
+              <>
+                <p className="mb-1">{task.description}</p>
+                <p className="text-sm">
+                  <strong>Priority:</strong> {task.priority}
+                </p>
+                <p className="text-sm">
+                  <strong>Created By:</strong> {task.createdBy?.name || 'Unknown'}
+                </p>
+                <p className="text-sm">
+                  <strong>Assigned To:</strong> {task.assignedTo?.name || 'Unassigned'}
+                </p>
+                <p className="text-sm">
+                  <strong>Created At:</strong> {new Date(task.createdAt).toLocaleString()}
+                </p>
+                <p className="text-sm">
+                  <strong>Updated At:</strong> {new Date(task.updatedAt).toLocaleString()}
+                </p>
+              </>
+            }
             footer={`Status: ${task.status}`}
           />
         ))}
       </div>
 
       {/* Floating "Create Task" button */}
-      <Link href="../tasks/create">
+      <Link href="../tasks/new">
         <div
-          className="fixed bottom-6 right-6 z-50 bg-blue-600 hover:bg-blue-700 text-white text-5xl rounded-full w-20 h-20 flex items-center justify-center shadow-lg cursor-pointer transition-transform hover:scale-110"
+          id="create-task-button"
+          className="fixed bottom-6 right-6 z-50 bg-blue-600 hover:bg-blue-700 rounded-full text-white flex items-center justify-center shadow-lg"
           title="Create Task"
           style={{
-            position: 'fixed',
-            bottom: '6rem', // Adjust as needed
-            right: '6rem', // Adjust as needed
-            width: '80px',  // Circle size
-            height: '80px', // Circle size
-            fontSize: '90px', // Font size for the plus sign
+            width: '80px',
+            height: '80px',
+            fontSize: '50px',
           }}
         >
-          <span style={{
-            position: 'absolute',
-            top: '50%',
-            left: '50%',
-            transform: 'translate(-50%, -50%)',
-            fontSize: '50px', // Adjust size to fit
-          }}>
-            +
-          </span>
+          +
         </div>
       </Link>
     </main>

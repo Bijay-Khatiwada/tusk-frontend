@@ -1,14 +1,34 @@
-// src/app/page.tsx
+'use client';
 
-import React from 'react';
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 
-const Dashboard = () => {
-  return (
-    <div>
-      <h1>Welcome to Task Management</h1>
-      <p>Here’s your dashboard where you can manage your tasks, teams, and projects.</p>
-    </div>
-  );
+const HomePage = () => {
+  const router = useRouter();
+  const [isChecking, setIsChecking] = useState(true); // Prevent rendering before we check
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const token = localStorage.getItem('jwtToken');
+
+      if (token) {
+        console.log('✅ Token found, redirecting to dashboard');
+        router.push('/dashboard');
+      } else {
+        console.log('⛔️ No token, redirecting to login');
+        router.push('/login');
+      }
+    }
+
+    // Even if window doesn't exist initially, we still wait a moment
+    setIsChecking(false);
+  }, [router]);
+
+  if (isChecking) {
+    return <div>Loading...</div>; // Prevent flickering
+  }
+
+  return null;
 };
-// src/app/page.tsx
-export default Dashboard;
+
+export default HomePage;

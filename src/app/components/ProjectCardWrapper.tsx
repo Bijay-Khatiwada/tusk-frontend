@@ -1,21 +1,22 @@
-// src/app/components/TaskCardWrapper.tsx
+// src/app/components/ProjectCardWrapper.tsx
 'use client';
 
 import { useRouter } from 'next/navigation';
-import Card from './taskCard';
+import Card from './projectCard'; // still using the same Card component
 
 type Props = {
-  id: string;
+  id: string; // 👈 Add this line
   title: string;
-  description: string;
+  description: string | React.ReactNode;
   footer?: React.ReactNode;
 };
 
-const TaskCardWrapper: React.FC<Props> = ({ id, title, description, footer }) => {
+
+const ProjectCardWrapper: React.FC<Props> = ({ id, title, description, footer }) => {
   const router = useRouter();
 
   const handleClick = () => {
-    router.push(`/tasks/${id}`);
+    router.push(`/projects/${id}`);
   };
 
   return (
@@ -28,4 +29,4 @@ const TaskCardWrapper: React.FC<Props> = ({ id, title, description, footer }) =>
   );
 };
 
-export default TaskCardWrapper;
+export default ProjectCardWrapper;
