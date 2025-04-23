@@ -1,0 +1,67 @@
+.stars,
+.twinkling {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 0;
+    pointer-events: none;
+    /* 💥 MAGIC LINE */
+}
+
+.stars {
+    background: url('/images/alien.jpg') repeat;
+    animation: moveStars 200s linear infinite;
+    opacity: 0.4;
+}
+
+.twinkling {
+    background: url('/images/alien-face.jpg') repeat;
+    animation: moveTwinkling 200s linear infinite;
+    opacity: 0.2;
+}
+
+@keyframes moveStars {
+    from {
+        background-position: 0 0;
+    }
+
+    to {
+        background-position: -10000px 5000px;
+    }
+}
+
+@keyframes moveTwinkling {
+    from {
+        background-position: 0 0;
+    }
+
+    to {
+        background-position: 10000px -5000px;
+    }
+}
+
+.drop-shadow-glow {
+    text-shadow: 0 0 8px #00ffc3, 0 0 20px #00ffc3;
+}
+
+.animate-float {
+    animation: float 4s ease-in-out infinite;
+}
+
+@keyframes float {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-15px);
+    }
+}
+
+.glass-card {
+    background: rgba(255, 255, 255, 0.05);
+}

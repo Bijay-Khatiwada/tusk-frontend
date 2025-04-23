@@ -87,19 +87,10 @@ export default function TasksPage() {
 
       {/* Floating "Create Task" button */}
       <Link href="../tasks/new">
-        <div
-          id="create-task-button"
-          className="fixed bottom-6 right-6 z-50 bg-blue-600 hover:bg-blue-700 rounded-full text-white flex items-center justify-center shadow-lg"
-          title="Create Task"
-          style={{
-            width: '80px',
-            height: '80px',
-            fontSize: '50px',
-          }}
-        >
-          +
-        </div>
-      </Link>
+  <div className="create-button" title="Create Task">
+    <span>+</span>
+  </div>
+</Link>
     </main>
   );
 }

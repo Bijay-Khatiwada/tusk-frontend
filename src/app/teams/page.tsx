@@ -41,9 +41,9 @@ const TeamListPage = () => {
 
         const teamsData = await res.json();
         setTeams(teamsData);
-      } catch (err) {
-        setError(err.message);
-        console.error('Error fetching teams:', err);
+      } catch (err: any) {
+        console.error(err);
+        setError(err.message || 'Something went wrong');
       }
     };
 
@@ -84,13 +84,10 @@ const TeamListPage = () => {
       </ul>
 
       <Link href="../teams/create">
-        <div
-          className="fixed bottom-6 right-6 z-50 bg-blue-600 hover:bg-blue-700 text-white text-5xl rounded-full w-20 h-20 flex items-center justify-center shadow-lg cursor-pointer transition-transform hover:scale-110"
-          title="Create Team"
-        >
-          <span className="text-4xl">+</span>
-        </div>
-      </Link>
+  <div className="create-button" title="Create Task">
+    <span>+</span>
+  </div>
+</Link>
     </main>
   );
 };

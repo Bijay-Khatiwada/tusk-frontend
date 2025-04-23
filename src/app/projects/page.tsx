@@ -97,23 +97,10 @@ export default function ProjectListPage() {
 
       {/* Floating "Create Project" button */}
       <Link href="../projects/new">
-        <div
-          className="fixed bottom-6 right-6 z-50 bg-green-600 hover:bg-green-700 text-white text-5xl rounded-full w-20 h-20 flex items-center justify-center shadow-lg cursor-pointer transition-transform hover:scale-110"
-          title="Create Project"
-        >
-          <span
-            style={{
-              position: 'absolute',
-              top: '50%',
-              left: '50%',
-              transform: 'translate(-50%, -50%)',
-              fontSize: '50px',
-            }}
-          >
-            +
-          </span>
-        </div>
-      </Link>
+  <div className="create-button" title="Create Task">
+    <span>+</span>
+  </div>
+</Link>
     </main>
   );
 }

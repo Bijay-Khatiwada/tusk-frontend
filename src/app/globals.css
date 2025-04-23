@@ -166,9 +166,10 @@ textarea:focus {
   width: 250px;
   background-color: rgba(0, 0, 0, 0.8);
   padding: 20px;
-  position: sticky;
-  top: 0;
-  height: 100vh;
+  position: relative; /* 🔄 changed from sticky */
+  height: 75vh;
+  display: flex;
+  flex-direction: column;
 }
 
 .sidebar-links {
@@ -192,23 +193,362 @@ textarea:focus {
 .sidebar-links a:hover {
   color: #00ff88;
 }
+.sidebar>div:first-child {
+  flex-grow: 1;
+}
+
 #icon-image {
   width: 60px;
   height: 60px;
 }
-
-#create-task-button {
-  width: 100px;
-  height: 100px;
-  border-radius: 50%;
-  background-color: #00ff88;
-  color: #000;
-  border: none;
-  padding: 10px 20px;
-  font-size: 10rem;
-  border-radius: 5px;
+.create-button {
+  position: fixed !important;
+  /* Always pinned */
+  bottom: 1.5rem;
+  /* 24px from bottom */
+  right: 1.5rem;
+  /* 24px from right */
+  z-index: 1000;
+  /* Way on top */
+  background-color: #16a34a;
+  /* Tailwind green-600 */
+  color: white;
+  font-size: 2.5rem;
+  width: 5rem;
+  /* 80px */
+  height: 5rem;
+  /* 80px */
+  border-radius: 9999px;
+  /* Full circle */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+    0 4px 6px -2px rgba(0, 0, 0, 0.05);
   cursor: pointer;
+  transition: transform 0.2s ease-in-out, background-color 0.2s ease-in-out;
+}
+
+.create-button:hover {
+  background-color: #15803d;
+  /* Tailwind green-700 */
+  transform: scale(1.1);
+}
+
+.create-button span {
+  font-size: 2.5rem;
+  line-height: 1;
+  position: relative;
+  top: -1px;
+}
+/* Theme toggle */
+.theme-toggle {
+  width: 60px;
+  height: 30px;
+  background-color: #333;
+  border-radius: 30px;
+  position: relative;
+  cursor: pointer;
+  margin-left: 1rem;
   transition: background-color 0.3s;
-  box-shadow: 0 4px 15px rgba(0, 255, 136, 0.3);
-  position: fixed;
+  border: 2px solid #00ff88;
+}
+
+.toggle-thumb {
+  width: 26px;
+  height: 26px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  border-radius: 50%;
+  position: absolute;
+  top: 1px;
+  transition: all 0.4s ease-in-out;
+}
+
+.toggle-thumb.dark {
+  left: 1px;
+  background-image: url('/images/moon-sleep.jpg');
+  /* Add this asset */
+}
+
+.toggle-thumb.light {
+  left: 31px;
+  background-image: url('/images/sun-smile.png');
+  /* Add this asset */
+}
+
+/* Light and dark themes */
+body.light-theme {
+  background-color: #ffffff;
+  color: #000000;
+}
+
+body.light-theme h1,
+body.light-theme h2,
+body.light-theme h3,
+body.light-theme h4,
+body.light-theme h5,
+body.light-theme h6 {
+  color: #333;
+  text-shadow: none;
+}
+
+body.dark-theme {
+  background-color: #0a0a0a;
+  color: #ffffff;
+}
+
+/* ----------------------- */
+/* Light Theme Overrides  */
+/* ----------------------- */
+
+/* 🌤️ Muted Warm Light Theme */
+body.light-theme {
+  background-color: #fdf7e3;
+  /* warm, parchment-like background */
+  color: #2f2f2f;
+}
+
+body.light-theme .navbar {
+  background-color: rgba(255, 248, 220, 0.8);
+  /* light warm gold */
+  box-shadow: 0 4px 10px rgba(120, 90, 30, 0.15);
+}
+
+body.light-theme .navbar-title {
+  color: #2e7d60;
+}
+
+body.light-theme .navbar-links a {
+  color: #333;
+}
+
+body.light-theme .navbar-links a:hover {
+  color: #2e7d60;
+}
+
+body.light-theme h1,
+body.light-theme h2,
+body.light-theme h3,
+body.light-theme h4,
+body.light-theme h5,
+body.light-theme h6 {
+  color: #2c2c2c;
+  text-shadow: none;
+}
+
+body.light-theme .card,
+body.light-theme .custom-card {
+  background: rgba(255, 255, 255, 0.7);
+  box-shadow: 0 4px 10px rgba(50, 50, 50, 0.05);
+  border: 1px solid rgba(200, 180, 140, 0.2);
+}
+
+body.light-theme .card-title,
+body.light-theme .custom-card .card-title {
+  color: #2e7d60;
+}
+
+body.light-theme .card-description,
+body.light-theme .custom-card .card-description {
+  color: #3c3c3c;
+}
+
+body.light-theme .card-footer,
+body.light-theme .custom-card .card-footer {
+  color: #666;
+  border-top: 1px solid rgba(50, 50, 50, 0.1);
+}
+
+body.light-theme button {
+  background-color: #2e7d60;
+  color: #fff;
+}
+
+body.light-theme button:hover {
+  background-color: #25664e;
+}
+
+body.light-theme input,
+body.light-theme textarea {
+  background-color: #fffaf0;
+  color: #2f2f2f;
+  border: 1px solid #e5ddb0;
+}
+
+body.light-theme input:focus,
+body.light-theme textarea:focus {
+  box-shadow: 0 0 5px #b8c28c;
+}
+
+/* Sidebar */
+body.light-theme .sidebar {
+  background-color: rgba(255, 250, 235, 0.85);
+}
+
+body.light-theme .sidebar-links a {
+  color: #3c3c3c;
+}
+
+body.light-theme .sidebar-links a:hover {
+  color: #2e7d60;
+}
+
+/* Create button stays green for consistency */
+body.light-theme .create-button {
+  background-color: #2e7d60;
+}
+
+body.light-theme .create-button:hover {
+  background-color: #25664e;
+}
+
+/* ✨ Fancy Select Dropdowns */
+
+select {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  border: 1px solid #00ff88;
+  padding: 10px;
+  border-radius: 8px;
+  font-size: 1rem;
+  width: 100%;
+  background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg width='12' height='12' viewBox='0 0 20 20' fill='%23ffffff' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M5.5 7.5L10 12.5L14.5 7.5H5.5Z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  background-size: 1rem;
+  cursor: pointer;
+  transition: border 0.3s ease, box-shadow 0.3s ease;
+}
+
+select:focus {
+  outline: none;
+  box-shadow: 0 0 5px #00ff88;
+  border-color: #00ff88;
+}
+
+/* Light theme overrides */
+body.light-theme select {
+  background-color: #fffaf0;
+  color: #333;
+  border: 1px solid #b8c28c;
+  background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg width='12' height='12' viewBox='0 0 20 20' fill='%23333' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M5.5 7.5L10 12.5L14.5 7.5H5.5Z'/%3E%3C/svg%3E");
+}
+
+body.light-theme select:focus {
+  box-shadow: 0 0 5px #b8c28c;
+  border-color: #b8c28c;
+}
+You can override react-select styling with something like this
+.react-select__control {
+  border: 1px solid #ccc;
+  padding: 2px;
+}
+
+.react-select__multi-value {
+  background-color: #e0f7fa;
+}
+
+.react-select__multi-value__label {
+  color: #00796b;
+}
+
+.react-select__option--is-focused {
+  background-color: #e0f2f1;
+}
+/* 🌌 About Page Styling */
+.about-container {
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  font-family: 'Exo', sans-serif;
+  color: var(--text-color);
+}
+
+.about-hero {
+  display: flex;
+  flex-direction: column-reverse;
+  align-items: center;
+  text-align: center;
+  gap: 2rem;
+  margin-bottom: 4rem;
+}
+
+.about-hero h1 {
+  font-size: 3rem;
+  color: var(--accent-color);
+}
+
+.about-hero p {
+  font-size: 1.2rem;
+  max-width: 600px;
+  margin: 1rem auto 0;
+}
+
+.hero-img img {
+  max-width: 100%;
+  border-radius: 12px;
+  box-shadow: 0 0 20px var(--glow);
+}
+
+.about-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+}
+
+.card {
+  background: var(--card-bg);
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 0 10px var(--glow);
+  text-align: center;
+  transition: transform 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+}
+
+.card img {
+  margin-bottom: 1rem;
+}
+
+.card h2 {
+  margin: 0.5rem 0;
+  color: var(--accent-color);
+}
+
+.card p {
+  font-size: 0.95rem;
+  color: var(--text-muted);
+}
+
+/* 🌗 Light/Dark Theme Variables */
+:root {
+  --bg-color: #f7f9fa;
+  --text-color: #1e1e1e;
+  --text-muted: #555;
+  --accent-color: #7e57c2;
+  --card-bg: #ffffff;
+  --glow: #e0e0e0;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg-color: #121212;
+    --text-color: #f1f1f1;
+    --text-muted: #aaaaaa;
+    --accent-color: #00ffc3;
+    --card-bg: #1e1e1e;
+    --glow: #00ffc355;
+  }
+}
+
+body {
+  background-color: var(--bg-color);
 }
