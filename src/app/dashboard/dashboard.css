@@ -1,0 +1,46 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@600&display=swap');
+
+.galactic-dashboard {
+  width: 100vw;
+  height: 100vh;
+  background: black;
+  font-family: 'Orbitron', sans-serif;
+  color: #00ffee;
+  overflow: hidden;
+  position: relative;
+}
+
+.overlay {
+  position: absolute;
+  top: 10%;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  z-index: 999;
+}
+
+.typewriter {
+  font-size: 2.5rem;
+  overflow: hidden;
+  border-right: 0.15em solid #00ffee;
+  white-space: nowrap;
+  margin: 0 auto;
+  animation: typing 3s steps(30, end), blink-caret 0.75s step-end infinite;
+}
+
+.ai-log {
+  font-size: 1rem;
+  margin-top: 1rem;
+  color: #a0fefb;
+  text-shadow: 0 0 10px #00ffee55;
+}
+
+@keyframes typing {
+  from { width: 0 }
+  to { width: 100% }
+}
+
+@keyframes blink-caret {
+  from, to { border-color: transparent }
+  50% { border-color: #00ffee; }
+}

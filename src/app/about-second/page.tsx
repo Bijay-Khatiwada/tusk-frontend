@@ -43,13 +43,13 @@ const AboutSecondPage = () => {
       <canvas ref={canvasRef} className="starfield" />
 
       <section className="intro">
-        <h1 className="glow-title">👽 Welcome to Our Universe</h1>
+        <h1 className="glow-title">👽 Welcome to Tusk</h1>
         <p className="glow-subtitle">You didn’t just land on a website. You were summoned.</p>
       </section>
 
       <section className="glyphs">
-        <div className="glyph" data-reveal="We think in quantum logic">𓂀</div>
-        <div className="glyph" data-reveal="Our code speaks across dimensions">ᚠ</div>
+        <div className="glyph" data-reveal="We perform in quantum logic">𓂀</div>
+        <div className="glyph" data-reveal="We connect teams across dimensions">ᚠ</div>
         <div className="glyph" data-reveal="You are not alone">۞</div>
       </section>
 

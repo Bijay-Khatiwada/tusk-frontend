@@ -9,13 +9,16 @@
     "lint": "next lint"
   },
   "dependencies": {
-
     "@fontsource/orbitron": "^5.2.5",
+    "@react-three/drei": "^10.0.7",
+    "@react-three/fiber": "^9.1.2",
     "framer-motion": "^12.7.4",
     "next": "^15.2.4",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "react-select": "^5.10.1"
+    "react-select": "^5.10.1",
+    "react-spring": "^9.7.5",
+    "three": "^0.176.0"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
