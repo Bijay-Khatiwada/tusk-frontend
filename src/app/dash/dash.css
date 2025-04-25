@@ -1,5 +1,5 @@
 .dashboard-container {
-    position: relative; /* Ensures everything inside is positioned relative */
+    position: relative;
     width: 100vw;
     height: 100vh;
     background-color: black;
@@ -27,23 +27,25 @@
     z-index: 9999; /* Ensure overlay is on top */
   }
   
-  .overlay-text {
-    font-size: 2rem;
-    color: #a0fefb;
-    text-shadow: 0 0 10px #00ffee55;
+  .galactic-message {
+    position: absolute;
+    top: 5%;
+    right: 20%;
+    color: #00ffee;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.5rem;
+    text-shadow: 0 0 10px #00ffee, 0 0 20px #00ffee, 0 0 30px #00ffee;
+    animation: glow 1s ease-in-out infinite alternate;
+    max-width: 200px; /* Restrict the message width */
   }
   
-  .navbar, .sidebar {
-    position: relative;
-    z-index: 9999; /* Ensure navbar/sidebar is clickable */
-  }
-  
-  /* Star/planet/wormhole styles */
-  .meshStandardMaterial {
-    color: #ffffff;
-    emissive: #00ffee;
-    emissiveIntensity: 1;
-    wireframe: true;
+  @keyframes glow {
+    0% {
+      text-shadow: 0 0 10px #00ffee, 0 0 20px #00ffee, 0 0 30px #00ffee;
+    }
+    100% {
+      text-shadow: 0 0 15px #00ffee, 0 0 25px #00ffee, 0 0 35px #00ffee;
+    }
   }
   
   @keyframes typing {
@@ -54,11 +56,5 @@
   @keyframes blink-caret {
     from, to { border-color: transparent; }
     50% { border-color: #00ffee; }
-  }
-  
-  /* Optional: To fix or adjust positioning or make other design changes */
-  .fixed-content {
-    position: fixed;
-    z-index: 9999;
   }
   
