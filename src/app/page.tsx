@@ -13,7 +13,7 @@ const HomePage = () => {
 
       if (token) {
         console.log('✅ Token found, redirecting to dashboard');
-        router.push('/dashboard');
+        router.push('/dash');
       } else {
         console.log('⛔️ No token, redirecting to login');
         router.push('/login');
