@@ -12,15 +12,16 @@ export default function NewProjectPage() {
   });
 
   const [teams, setTeams] = useState([]);
+  const [loading, setLoading] = useState(false); // For handling the loading state
+  const [error, setError] = useState(""); // For error messages
   const userId = typeof window !== 'undefined' ? localStorage.getItem('userId') : null;
 
   useEffect(() => {
     const fetchTeams = async () => {
       try {
         const token = localStorage.getItem('jwtToken');
-
         if (!token) {
-          console.error('No token found, please log in.');
+          setError('No token found, please log in.');
           return;
         }
 
@@ -31,10 +32,14 @@ export default function NewProjectPage() {
         });
 
         const data = await res.json();
-        const maybeTeams = Array.isArray(data) ? data : data.teams;
-        setTeams(maybeTeams || []);
+        if (res.ok) {
+          const maybeTeams = Array.isArray(data) ? data : data.teams;
+          setTeams(maybeTeams || []);
+        } else {
+          setError(data.message || 'Failed to fetch teams');
+        }
       } catch (error) {
-        console.error('Failed to fetch teams:', error);
+        setError('Failed to fetch teams: ' + error);
       }
     };
 
@@ -46,35 +51,41 @@ export default function NewProjectPage() {
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!userId) {
-      alert('You must be logged in to create a project');
-      return;
-    }
+  e.preventDefault();
+  if (!userId) {
+    alert('You must be logged in to create a project');
+    return;
+  }
 
-    const payload = {
-      ...form,
-      createdBy: userId,
-    };
-
-    try {
-      const res = await fetch('http://127.0.0.1:5001/project/create', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
-      });
-
-      if (res.ok) {
-        router.push('/projects');
-      } else {
-        const data = await res.json();
-        alert(data.message || 'Failed to create project');
-      }
-    } catch (err) {
-      console.error('Fetch error:', err);
-      alert('Something went wrong while connecting to the server.');
-    }
+  const payload = {
+    ...form,
+    createdBy: userId,
   };
+  const token = localStorage.getItem('jwtToken');
+
+
+  try {
+    const res = await fetch('http://127.0.0.1:5001/project/create', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    'Authorization': `Bearer ${token}`
+  },
+  body: JSON.stringify(payload),
+});
+
+    if (res.ok) {
+      router.push('/projects');
+    } else {
+      const data = await res.json();
+      alert(data.message || 'Failed to create project');
+    }
+  } catch (err) {
+    console.error('Fetch error:', err);
+    alert('Something went wrong while connecting to the server.');
+  }
+};
+
 
   return (
     <main className="p-6 max-w-md mx-auto">
@@ -83,6 +94,7 @@ export default function NewProjectPage() {
         <input
           name="name"
           placeholder="Project Name"
+          value={form.name}
           onChange={handleChange}
           className="w-full p-2 border rounded"
           required
@@ -90,6 +102,7 @@ export default function NewProjectPage() {
         <textarea
           name="description"
           placeholder="Description"
+          value={form.description}
           onChange={handleChange}
           className="w-full p-2 border rounded"
         />
@@ -98,6 +111,7 @@ export default function NewProjectPage() {
           value={form.team}
           onChange={handleChange}
           className="w-full p-2 border rounded"
+          required
         >
           <option value="">Select Team</option>
           {teams.map((team: any) => (
@@ -106,8 +120,19 @@ export default function NewProjectPage() {
             </option>
           ))}
         </select>
-        <button type="submit" className="bg-blue-600 text-white px-4 py-2 rounded">
-          Create
+
+        {error && (
+          <div className="text-red-500 text-sm mt-2">
+            {error}
+          </div>
+        )}
+
+        <button
+          type="submit"
+          className="bg-blue-600 text-white px-4 py-2 rounded"
+          disabled={loading}
+        >
+          {loading ? 'Creating...' : 'Create'}
         </button>
       </form>
     </main>

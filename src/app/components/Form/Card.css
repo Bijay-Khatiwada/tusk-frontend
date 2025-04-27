@@ -14,6 +14,10 @@
     transform: translateY(-5px);
     box-shadow: 0 0 15px rgba(0, 255, 170, 0.15);
 }
+.card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 10px 30px rgba(0, 255, 136, 0.6);
+}
 
 .card-title {
     font-family: 'Orbitron', sans-serif;
@@ -34,4 +38,13 @@
     color: #aaa;
     border-top: 1px solid rgba(255, 255, 255, 0.1);
     padding-top: 0.5rem;
+}
+.card {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 15px;
+    padding: 20px;
+    margin: 10px;
+    box-shadow: 0 4px 15px rgba(0, 255, 136, 0.3);
+    transition: transform 0.3s, box-shadow 0.3s;
+    display: grid;
 }

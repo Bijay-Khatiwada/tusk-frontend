@@ -4,7 +4,7 @@ import { Suspense, useRef, useState, useEffect } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
 import { OrbitControls, Stars, Float } from '@react-three/drei';
-import './dash.css';
+import './dashboard.css';
 
 // Wormhole Component
 interface WormholeProps {

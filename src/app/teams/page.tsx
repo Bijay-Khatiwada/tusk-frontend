@@ -64,7 +64,7 @@ const TeamListPage = () => {
 
       {error && <p className="text-red-500">{error}</p>}
 
-      <ul className="space-y-3">
+      <ul className="card-grid">
         {teams.map((team) => (
           <TeamCardWrapper
             key={team._id}

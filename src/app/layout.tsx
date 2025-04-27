@@ -1,6 +1,6 @@
 // src/app/layout.tsx
 
-import './globals.css';
+import './global.css';
 import ClientLayout from './ClientLayout';
 
 export const metadata = {

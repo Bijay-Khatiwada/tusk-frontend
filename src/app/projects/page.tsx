@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import ProjectCardWrapper from '../components/ProjectCardWrapper';
 import Link from 'next/link';
+import '../global.css';
 
 type Project = {
   _id: string;
@@ -67,7 +68,7 @@ export default function ProjectListPage() {
         Projects
       </h1>
 
-      <ul className="space-y-3">
+      <div className="card-grid" >
         {projects.map((project) => (
           <ProjectCardWrapper
             key={project._id}
@@ -93,7 +94,7 @@ export default function ProjectListPage() {
             footer={project.createdAt ? new Date(project.createdAt).toLocaleString() : 'N/A'}
           />
         ))}
-      </ul>
+      </div>
 
       {/* Floating "Create Project" button */}
       <Link href="../projects/new">

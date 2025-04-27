@@ -53,31 +53,7 @@ h1 {
   text-align: center;
 }
 
-.card {
-  background-color: rgba(255, 255, 255, 0.1);
-  border-radius: 15px;
-  padding: 20px;
-  margin: 10px;
-  box-shadow: 0 4px 15px rgba(0, 255, 136, 0.3);
-  transition: transform 0.3s, box-shadow 0.3s;
-}
 
-.card:hover {
-  transform: translateY(-10px);
-  box-shadow: 0 10px 30px rgba(0, 255, 136, 0.6);
-}
-
-.card-title {
-  font-family: 'Orbitron', sans-serif;
-  font-size: 1.5rem;
-  color: #00ff88;
-  margin-bottom: 10px;
-}
-
-.card-description {
-  font-size: 1rem;
-  color: #ccc;
-}
 
 button {
   background-color: #00ff88;
@@ -551,4 +527,25 @@ You can override react-select styling with something like this
 
 body {
   background-color: var(--bg-color);
+}
+
+.task-grid {
+  
+  display:grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1rem;
+  padding: 1rem;
+}
+
+.card-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  padding: 1rem;
+}
+
+.card-grid>* {
+  flex: 1 1 250px;
+  max-width: 300px;
+  /* 💡 Limit their stretch */
 }

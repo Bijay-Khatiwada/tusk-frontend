@@ -10,7 +10,8 @@ export default function NewTaskPage() {
     description: '',
     assignedTo: '',
     project: '',
-    status: 'T/.;oDo',
+    priority: 'Medium', // Default priority
+    status: 'ToDo',      // Corrected the typo
   });
 
   const [users, setUsers] = useState([]);
@@ -55,19 +56,31 @@ export default function NewTaskPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
+    const token = localStorage.getItem('jwtToken');
+    if (!token) {
+      console.error('JWT token not found.');
+      alert('You are not authenticated!');
+      return;
+    }
+
     const payload = {
       ...formData,
       createdBy: userId,
     };
 
     try {
+      console.log('Token:', token);
       const res = await fetch('http://127.0.0.1:5001/task/create', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`, // Attach token properly
+        },
         body: JSON.stringify(payload),
       });
 
       if (res.ok) {
+        alert('Task created successfully! 🚀');
         router.push('/tasks');
       } else {
         const errorData = await res.json();
@@ -83,6 +96,7 @@ export default function NewTaskPage() {
     <main className="p-6 max-w-xl mx-auto">
       <h1 className="text-2xl font-bold mb-4">Create a New Task</h1>
       <form onSubmit={handleSubmit} className="space-y-4">
+        {/* Title */}
         <input
           type="text"
           name="title"
@@ -92,6 +106,8 @@ export default function NewTaskPage() {
           className="w-full p-2 border rounded"
           required
         />
+
+        {/* Description */}
         <textarea
           name="description"
           value={formData.description}
@@ -100,6 +116,7 @@ export default function NewTaskPage() {
           className="w-full p-2 border rounded"
         />
 
+        {/* Assign to User */}
         <select
           name="assignedTo"
           value={formData.assignedTo}
@@ -115,6 +132,7 @@ export default function NewTaskPage() {
           ))}
         </select>
 
+        {/* Select Project */}
         <select
           name="project"
           value={formData.project}
@@ -129,6 +147,34 @@ export default function NewTaskPage() {
           ))}
         </select>
 
+        {/* Priority Field */}
+        <select
+          name="priority"
+          value={formData.priority}
+          onChange={handleChange}
+          className="w-full p-2 border rounded"
+          required
+        >
+          <option value="">Select Priority</option>
+          <option value="Low">Low 🔵</option>
+          <option value="Medium">Medium 🟡</option>
+          <option value="High">High 🔴</option>
+        </select>
+
+        {/* Status Field */}
+        <select
+          name="status"
+          value={formData.status}
+          onChange={handleChange}
+          className="w-full p-2 border rounded"
+          required
+        >
+          <option value="ToDo">To Do</option>
+          <option value="InProgress">In Progress</option>
+          <option value="Completed">Completed</option>
+        </select>
+
+        {/* Submit Button */}
         <button
           type="submit"
           className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
