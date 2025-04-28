@@ -1,4 +1,4 @@
-.dashboard-container {
+/* .dashboard-container {
     position: relative;
     width: 100vw;
     height: 100vh;
@@ -10,7 +10,7 @@
     position: absolute;
     top: 0;
     left: 0;
-    z-index: 1; /* Lower z-index for the canvas */
+    z-index: 1;
     width: 100%;
     height: 100%;
   }
@@ -24,7 +24,7 @@
     color: #00ffee;
     font-family: 'Orbitron', sans-serif;
     font-size: 3rem;
-    z-index: 9999; /* Ensure overlay is on top */
+    z-index: 9999; 
   }
   
   .galactic-message {
@@ -36,8 +36,7 @@
     font-size: 1.5rem;
     text-shadow: 0 0 10px #00ffee, 0 0 20px #00ffee, 0 0 30px #00ffee;
     animation: glow 1s ease-in-out infinite alternate;
-    max-width: 200px; /* Restrict the message width */
-  }
+    max-width: 200px;
   
   @keyframes glow {
     0% {
@@ -57,4 +56,186 @@
     from, to { border-color: transparent; }
     50% { border-color: #00ffee; }
   }
-  
+   */
+   
+
+html, body {
+  margin: 0;
+  padding: 0;
+  overflow: hidden; /* Prevent page scrolling */
+  height: 100%; /* Make sure the page takes up the full height */
+}
+
+/* Hide Sidebar on Dash Page */
+body.dash-page .sidebar {
+  display: none; /* Hide the sidebar on the Dash page */
+}
+
+.dashboard-container {
+  display: flex;
+  justify-content: flex-start; /* Align the content to the left */
+  align-items: center;
+  position: relative;
+  height: 100vh;
+  margin-left: 0; /* No margin for Dash page */
+  width: 100vw; /* Full width of the viewport */
+}
+
+canvas {
+  display: block; /* Remove any margin/padding or extra space */
+  width: 100%; /* Full width of the container */
+  height: 100%; /* Full height of the container */
+}
+
+/* Sidebar Styles */
+.sidebar {
+  width: 250px;
+  background-color: rgba(0, 0, 0, 0.8);
+  padding: 20px;
+  position: fixed; /* Fixed to the left side */
+  top: 0;
+  left: 0;
+  bottom: 0; /* Make sure it stretches the full height */
+  z-index: 2; /* Ensure the sidebar is above the canvas */
+}
+
+.sidebar-links {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.sidebar-links li {
+  list-style-type: none;
+}
+
+.sidebar-links a {
+  text-decoration: none;
+  color: #fff;
+  font-size: 1.1rem;
+  font-family: 'Exo', sans-serif;
+  transition: color 0.3s;
+}
+
+.sidebar-links a:hover {
+  color: #00ff88;
+}
+
+.sidebar > div:first-child {
+  flex-grow: 1;
+}
+
+/* Canvas Container for Space Effect */
+.canvas-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1; /* Make sure the canvas stays behind the sidebar */
+  width: 100%;
+  height: 100%;
+}
+
+/* Scrollable Overlay (Text and Effects on Canvas) */
+.scrollable-overlay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  color: #00ffee;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 3rem;
+  z-index: 9999; /* Ensure overlay is on top */
+}
+
+.galactic-message {
+  position: absolute;
+  top: 5%;
+  right: 20%;
+  color: #00ffee;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 1.5rem;
+  text-shadow: 0 0 10px #00ffee, 0 0 20px #00ffee, 0 0 30px #00ffee;
+  animation: glow 1s ease-in-out infinite alternate;
+  max-width: 200px; /* Restrict the message width */
+}
+
+/* Glow Animation for Text */
+@keyframes glow {
+  0% {
+    text-shadow: 0 0 10px #00ffee, 0 0 20px #00ffee, 0 0 30px #00ffee;
+  }
+  100% {
+    text-shadow: 0 0 15px #00ffee, 0 0 25px #00ffee, 0 0 35px #00ffee;
+  }
+}
+
+@keyframes typing {
+  from {
+    width: 0;
+  }
+  to {
+    width: 100%;
+  }
+}
+
+@keyframes blink-caret {
+  from,
+  to {
+    border-color: transparent;
+  }
+  50% {
+    border-color: #00ffee;
+  }
+}
+
+/* Adjust the main content styles to work around sidebar */
+.main-content {
+  display: flex;
+  flex-grow: 1;
+  padding: 20px;
+}
+
+h1 {
+  font-size: 2.5rem;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+/* Full-page container for the dashboard */
+.dashboard-container {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Scrollable content settings for dynamic page */
+.scrollable-overlay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  color: #00ffee;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 3rem;
+  z-index: 9999; /* Ensure overlay is on top */
+}
+
+.canvas-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1; /* Make sure the canvas stays behind the sidebar */
+  width: 100%;
+  height: 100%;
+}
+
+/* Ensure there is no scrollbar */
+html, body {
+  overflow: hidden; /* Prevent any scrollbar */
+  height: 100%;
+}
+
