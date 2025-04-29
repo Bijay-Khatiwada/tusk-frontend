@@ -92,7 +92,7 @@ canvas {
   width: 250px;
   background-color: rgba(0, 0, 0, 0.8);
   padding: 20px;
-  position: fixed; /* Fixed to the left side */
+  position: sticky; /* Fixed to the left side */
   top: 0;
   left: 0;
   bottom: 0; /* Make sure it stretches the full height */

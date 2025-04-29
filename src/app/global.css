@@ -136,13 +136,61 @@ textarea:focus {
   color: #00ff88;
 }
 /* Add this in your src/app/styles/global.css */
+.navbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 15px; /* adjust spacing as needed */
+}
+
+.theme-toggle {
+  cursor: pointer;
+  width: 40px;
+  height: 20px;
+  background-color: #444;
+  border-radius: 20px;
+  position: relative;
+  padding: 3px;
+  box-sizing: border-box;
+}
+
+.toggle-thumb {
+  width: 14px;
+  height: 14px;
+  background-color: #00ff88;
+  border-radius: 50%;
+  position: absolute;
+  top: 3px;
+  transition: left 0.3s ease;
+}
+
+.toggle-thumb.light {
+  left: 3px;
+}
+
+.toggle-thumb.dark {
+  left: 23px;
+}
+
+.logout-icon {
+  cursor: pointer;
+  color: #ff4d4d;
+  width: 24px;
+  height: 24px;
+  transition: transform 0.2s ease, color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.logout-icon:hover {
+  color: #ff0000;
+  transform: scale(1.2);
+  box-shadow: 0 0 10px rgba(255, 77, 77, 0.6);
+}
 
 /* Sidebar Styles */
 .sidebar {
   width: 250px;
   background-color: rgba(0, 0, 0, 0.8);
   padding: 20px;
-  position: relative; /* 🔄 changed from sticky */
+  position: sticky; /* 🔄 changed from sticky */
   height: 75vh;
   display: flex;
   flex-direction: column;
@@ -548,4 +596,9 @@ body {
   flex: 1 1 250px;
   max-width: 300px;
   /* 💡 Limit their stretch */
+}
+.no-global-style {
+  all: unset;
+  font-size: 2.25rem; /* text-4xl equivalent */
+  color: #ef4444; /* Tailwind red-500 */
 }
